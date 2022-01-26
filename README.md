@@ -1,4 +1,4 @@
-# Meetup-GN traffic pipeline (Spring-Kafka version)
+# Meetup-GN traffic pipeline (Mutiny version)
 
 ### Startup Docker containers
 
