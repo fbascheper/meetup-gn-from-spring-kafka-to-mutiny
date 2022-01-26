@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.3</version>
-        <relativePath/>
-    </parent>
+
     <groupId>com.github.fbascheper</groupId>
     <artifactId>meetup-gn-from-spring-kafka-to-mutiny</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <name>meetup-gn-from-spring-kafka-to-mutiny</name>
     <description>meetup-gn-from-spring-kafka-to-mutiny</description>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <dependency.version.com.fasterxml.jackson>2.13.0</dependency.version.com.fasterxml.jackson>
+        <dependency.version.smallrye.mutiny>1.3.1</dependency.version.smallrye.mutiny>
+        <dependency.version.smallrye.reactive-messaging>3.10.1</dependency.version.smallrye.reactive-messaging>
+        <dependency.version.smallrye.smallrye-config>2.6.0</dependency.version.smallrye.smallrye-config>
+
+        <dependency.version.smallrye.metrics>3.0.3</dependency.version.smallrye.metrics>
+        <dependency.version.eclipse.metrics-api>3.0</dependency.version.eclipse.metrics-api>
 
         <dependency.version.jakarta.xml.bind>2.3.3</dependency.version.jakarta.xml.bind>
+        <dependency.version.jakarta.cdi-api>2.0.2</dependency.version.jakarta.cdi-api>
+
+        <dependency.version.ch.qos.logback>1.2.10</dependency.version.ch.qos.logback>
+        <dependency.version.org.slf4j>1.7.35</dependency.version.org.slf4j>
+
+        <dependency.version.jboss.weld-core>3.1.7.Final</dependency.version.jboss.weld-core>
+
+
+        <dependency.version.org.hamcrest>2.2</dependency.version.org.hamcrest>
 
         <build.version.maven-clean-plugin>3.1.0</build.version.maven-clean-plugin>
         <build.version.build-helper-maven-plugin>3.0.0</build.version.build-helper-maven-plugin>
@@ -27,27 +45,35 @@
     <dependencies>
         <!-- COMPILE dependencies -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>mutiny</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>mutiny-reactive-streams-operators</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>smallrye-reactive-messaging-provider</artifactId>
+            <version>${dependency.version.smallrye.reactive-messaging}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>smallrye-reactive-messaging-kafka</artifactId>
+            <version>${dependency.version.smallrye.reactive-messaging}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.smallrye.config</groupId>
+            <artifactId>smallrye-config</artifactId>
+            <version>${dependency.version.smallrye.smallrye-config}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${dependency.version.com.fasterxml.jackson}</version>
         </dependency>
 
         <dependency>
@@ -62,32 +88,69 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- TEST dependencies -->
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <scope>test</scope>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
+            <version>${dependency.version.jboss.weld-core}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>${dependency.version.jakarta.cdi-api}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${dependency.version.ch.qos.logback}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${dependency.version.ch.qos.logback}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${dependency.version.org.slf4j}</version>
+        </dependency>
+
+        <!-- TEST dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-test</artifactId>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${dependency.version.org.hamcrest}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.smallrye.reactive</groupId>
+                <artifactId>mutiny-bom</artifactId>
+                <version>${dependency.version.smallrye.mutiny}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.8.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -121,6 +184,12 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
+
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
                 <version>${build.version.jaxb2-maven-plugin}</version>
@@ -151,8 +220,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
 </project>
