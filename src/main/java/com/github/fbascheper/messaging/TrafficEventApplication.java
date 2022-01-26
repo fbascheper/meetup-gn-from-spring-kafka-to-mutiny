@@ -1,10 +1,7 @@
 package com.github.fbascheper.messaging;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import javax.enterprise.inject.se.SeContainer;
+import javax.enterprise.inject.se.SeContainerInitializer;
 
 /**
  * Main application for traffic event handling.
@@ -12,14 +9,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * @author Frederieke Scheper
  * @since 20-10-2021
  */
-@SpringBootApplication(scanBasePackages = {"com.github.fbascheper.messaging"})
-@EnableConfigurationProperties
 public class TrafficEventApplication {
 
-    private final Logger logger = LoggerFactory.getLogger(TrafficEventApplication.class);
-
     public static void main(String[] args) {
-        SpringApplication.run(TrafficEventApplication.class, args);
+        SeContainer container = SeContainerInitializer.newInstance().initialize();
+
+        // No need to manually activate a long-running bean to keep the WELD container active.
+        // container.getBeanManager().createInstance().select(TrafficEventsEmitter.class).get().activate();
+
     }
 
 }
