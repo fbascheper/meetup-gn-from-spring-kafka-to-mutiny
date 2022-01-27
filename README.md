@@ -10,7 +10,7 @@ docker volume ls
 ### Cleanup Docker containers with topics etc.
 
 ```shell
-
+docker-compose down
 docker volume prune --force
 docker-compose up -d
 docker volume ls
